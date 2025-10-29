@@ -1,0 +1,15 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class InspectionStatus extends Model
+{
+    use HasFactory;
+
+    protected $table = 'inspection_status';
+
+    protected $fillable = ['status', 'text', 'icon'];
+
+}

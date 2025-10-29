@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('car_brakes', function (Blueprint $table) {
+            $table->id();
+            $table->string('brake_front')->nullable();
+            $table->string('brake_rear')->nullable();
+            $table->string('suspension_front')->nullable();
+            $table->string('suspension_back')->nullable();
+            $table->string('steering')->nullable();
+            $table->string('wheel_type_front')->nullable();
+            $table->string('wheel_type_rear')->nullable();
+            $table->string('wheel_type_front_rims')->nullable();
+            $table->string('wheel_type_rear_rims')->nullable();
+            $table->string('features_equipments')->nullable();
+            $table->string('car_make_id')->unique();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('car_brakes');
+    }
+};
