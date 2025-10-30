@@ -18,15 +18,22 @@ class Inpection extends Model
         'data'
     ];
 
-    protected $casts = [
-        'status'        => 'array',
-        'topic'         => 'array',
-        'area'          => 'array',
-        'specific_area' => 'array',
-        'reasons'       => 'array',
-        'allow_capture' => 'array',
-        'data' => 'array',
-    ];
+protected $casts = [
+    'id' => 'integer',
+    'car_category' => 'string',
+
+    // longtext JSON-like fields
+    'status' => 'array',
+    'topic' => 'array',
+    'area' => 'array',
+    'specific_area' => 'array',
+    'reasons' => 'array',
+    'allow_capture' => 'array',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
 
    

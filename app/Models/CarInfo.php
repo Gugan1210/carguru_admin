@@ -36,6 +36,33 @@ class CarInfo extends Model
         'isSold',
         'status'
     ];
+    protected $casts = [
+    'id' => 'integer',
+
+    'car_detail_id' => 'string',
+    'car_info_category' => 'string',
+    'car_info_price' => 'integer',
+    'car_info_location' => 'string',
+    'car_info_registration_type' => 'string',
+    'car_info_registration_number' => 'string',
+    'car_info_registration_date' => 'string',
+    'car_info_car_make_year' => 'string',
+    'car_info_exterior_color' => 'string',
+    'interior_color' => 'string',
+    'number_of_keys' => 'integer',
+    'engine_number' => 'string',
+    'chassis_number' => 'string',
+    'mileage' => 'string',
+    'brand_id' => 'string',   // DB is varchar(45)
+    'model_id' => 'integer',  // DB int
+    'variant_id' => 'string', // varchar
+    'car_info_fuel_type' => 'string',
+    'isSold' => 'boolean',
+    'status' => 'boolean',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
     public function getCarDetailAccident()
     {

@@ -26,4 +26,30 @@ class BeautifyManagement extends Model
         'car_video',
         'video_360',
     ];
+    protected $casts = [
+    'id' => 'integer',
+    'promotion_id' => 'string',
+    'car_detail_id' => 'string',
+
+    'front_45' => 'string',
+    'back_45' => 'string',
+    'front_view' => 'string',
+    'back_view' => 'string',
+    'side' => 'string',
+    'interior_front' => 'string',
+    'interior_back' => 'string',
+    'dashboard' => 'string',
+    'speedometer' => 'string',
+    'gear' => 'string',
+    'engine' => 'string',
+    'tyre' => 'string',
+    'others' => 'string',
+
+    'car_video' => 'string',
+    'video_360' => 'string',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 }

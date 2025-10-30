@@ -23,5 +23,17 @@ class CarDiamension extends Model
         'created_at',
         'updated_at'
     ];
+    protected $casts = [
+    'id' => 'integer',
+    'length_mm' => 'float',
+    'weight_mm' => 'float',
+    'height_mm' => 'float',
+    'wheel_base_mm' => 'float',
+    'kerb_weight_kg' => 'float',
+    'fuel_tank_ltr' => 'float',
+    'car_make_id' => 'string', 
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
 }

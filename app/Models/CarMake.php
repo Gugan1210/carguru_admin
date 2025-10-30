@@ -39,6 +39,33 @@ class CarMake extends Model
         'mprs',
         'body_type'
     ];
+    protected $casts = [
+    'id' => 'integer',
+
+    'brand_id' => 'string',
+    'brand_country' => 'string',
+    'model_id' => 'string',
+    'variant_id' => 'string',
+    'brand_emblem' => 'string',
+    'transmission' => 'string',
+    'fuel_type' => 'string',
+    'drive_train' => 'string',
+    'start_year' => 'string',
+    'seat' => 'string',
+    'exterior_color' => 'string',
+    'interior_color' => 'string',
+    'consumption' => 'string',
+    'car_id' => 'string',
+    'end_year' => 'string',
+    'no_of_door' => 'string',
+    'consumption_value_km_l' => 'string',
+    'mprs' => 'string',
+    'body_type' => 'string',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
     public function getCountry()
     {

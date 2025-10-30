@@ -14,4 +14,17 @@ class Currency extends Model
         'symbol',
         'decimals',
     ];
+    protected $casts = [
+    'id' => 'integer',
+
+    'country_id' => 'integer',
+    'iso2' => 'string',
+    'code' => 'string',
+    'symbol' => 'string',
+    'decimals' => 'integer',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 }

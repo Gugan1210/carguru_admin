@@ -27,7 +27,19 @@ class Advertisement extends Model
         'promotion_id',
         'is_marqee'
     ];
-
+protected $casts = [
+    'banner_id' => 'integer',
+    'set' => 'string',
+    'banner_web' => 'string',
+    'banner_mob' => 'string',
+    'location' => 'string',
+    'status' => 'boolean',
+    'ad_placement' => 'integer',
+    'ad_topic' => 'integer',
+    'headline_content_text' => 'string',
+    'promotion_id' => 'integer',
+    'is_marqee' => 'boolean',
+    ];
     public function getAdPlacement()
     {
         return $this->hasOne(AdPlacement::class, 'id', 'ad_placement');

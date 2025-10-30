@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Fee_Tax;
 use Illuminate\Http\Request;
 use App\Traits\commonTrait;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class Fee_Tax_Controller extends Controller
 {

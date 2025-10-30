@@ -20,4 +20,27 @@ class PromosInput extends Model
         'mileage',
         'color',
     ];
+    protected $casts = [
+    'id' => 'integer',
+
+    'promotion_id' => 'string',
+    'country_id' => 'string',
+    'brand_id' => 'string',
+    'body_type_id' => 'string',
+    'fuel_type_id' => 'string',
+
+    // longtext (JSON filters)
+    'price' => 'array',
+    'year' => 'array',
+    'mileage' => 'array',
+
+    'transmission' => 'string',
+    'color' => 'string',
+
+    'model_id' => 'string',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 }

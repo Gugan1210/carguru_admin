@@ -15,6 +15,16 @@ class BranchCenter extends Model
         'name',
         'status',
     ];
+    protected $casts = [
+    'country_id' => 'integer',
+    'state_id' => 'integer',
+    'city_id' => 'integer',
+    'branch_type' => 'string',
+    'name' => 'string',
+    'status' => 'boolean',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
     public function country()
     {

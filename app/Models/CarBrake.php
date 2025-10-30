@@ -31,10 +31,23 @@ class CarBrake extends Model
         'created_at',
         'updated_at'
     ];
-
     protected $casts = [
-        'features_equipments' => 'array',
-    ];
+    'id' => 'integer',
+    'brake_front' => 'string',
+    'brake_rear' => 'string',
+    'suspension_front' => 'string',
+    'suspension_back' => 'string',
+    'steering' => 'string',
+    'wheel_type_front' => 'string',
+    'wheel_type_rear' => 'string',
+    'wheel_type_front_rims' => 'string',
+    'wheel_type_rear_rims' => 'string',
+    'features_equipments' => 'string',
+    'car_make_id' => 'string',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
 
     public function getBrakeFront()

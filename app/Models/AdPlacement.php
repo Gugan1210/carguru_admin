@@ -8,4 +8,10 @@ class AdPlacement extends Model
 {
     protected $table = 'adplacement';
     protected $fillable = ['id', 'name', 'status'];
+
+    protected $casts = [
+        'id' => 'integer',
+        'name' => 'string',
+        'status' => 'boolean', 
+    ];
 }

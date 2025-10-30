@@ -24,6 +24,18 @@ class CarEngine extends Model
         'created_at',
         'updated_at'
     ];
+    protected $casts = [
+    'id' => 'integer',
+    'engine_cc' => 'string',
+    'engine_type' => 'string',
+    'compression_ratio' => 'string',
+    'peak_power_kw' => 'string',
+    'peak_torque_nm' => 'string',
+    'car_makes_id' => 'string',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
     public function getEngineCC()
     {

@@ -11,5 +11,14 @@ class InspectionStatus extends Model
     protected $table = 'inspection_status';
 
     protected $fillable = ['status', 'text', 'icon'];
+    protected $casts = [
+    'id' => 'integer',
+    'text' => 'string',
+    'icon' => 'string',
+    'status' => 'string', 
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
 }

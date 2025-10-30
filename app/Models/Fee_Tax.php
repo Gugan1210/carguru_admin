@@ -20,12 +20,23 @@ class Fee_Tax extends Model
         'tax_fee',
     ];
 
-    protected $casts = [
-        'handling_fee' => 'array',
-        'inspection_fee' => 'array',
-        'platform_fee' => 'array',
-        'dealers_fee' => 'array',
-        'others_fee' => 'array',
-        'tax_fee' => 'array',
-    ];
+protected $casts = [
+    'id' => 'integer',
+    'booking_amount' => 'string',
+
+    'handling_fee' => 'array',
+    'inspection_fee' => 'array',
+    'platform_fee' => 'array',
+    'dealers_fee' => 'array',
+    'tax_fee' => 'array',
+
+    'platform_fee_more_than' => 'string',
+    'platform_fee_chargeable_fee' => 'string',
+    'other_type_fee' => 'string',
+    'other_type_amount' => 'string',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 }

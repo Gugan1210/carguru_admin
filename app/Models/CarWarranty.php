@@ -18,6 +18,19 @@ class CarWarranty extends Model
         'created_at',
         'updated_at',
     ];
+    protected $casts = [
+    'id' => 'integer',
+
+    'manufacturers_warranty' => 'string',
+    'cargurus_warranty' => 'string',
+    'road_tax_amount_rm' => 'string',
+    'road_tax_year' => 'string',
+    'car_make_id' => 'string',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
     public function getManufacturersWarranty()
     {

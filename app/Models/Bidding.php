@@ -30,10 +30,25 @@ class Bidding extends Model
         'status_management'
     ];
 
-    protected $casts = [
-        'bid_increment' => 'array',
-        'bid_schedule' => 'array',
-        'carmake' => 'array',
-        'status_management' => 'array'
-    ];
+protected $casts = [
+    'id' => 'integer',
+
+    'bid_increment' => 'string', // longtext
+    'bid_session_duration' => 'string',
+    'timing_each_bid' => 'string',
+    'countdown_first_interval' => 'string',
+    'countdown_second_interval' => 'string',
+    'countdown_third_interval' => 'string',
+    'preview_before_bid' => 'string',
+    'cooling_period' => 'string',
+    'resbid_bid_session' => 'string',
+    'resbid_attempts' => 'string',
+    'resbid_price_reduction' => 'string',
+
+    'bid_schedule' => 'string', // longtext (datetime stored in text)
+    
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 }

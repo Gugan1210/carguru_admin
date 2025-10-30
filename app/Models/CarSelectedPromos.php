@@ -10,12 +10,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CarSelectedPromos extends Model
 {
     use HasFactory;
+    protected $table = 'car_selected_promos';
     protected $fillable = [
         'promotion_id',
         'car_detail_id',
         'transmission',
         'is_expired',
     ];
+    protected $casts = [
+    'id' => 'integer',
+    'promotion_id' => 'string',
+    'car_detail_id' => 'string',
+    'transmission' => 'string',
+    'is_expired' => 'boolean',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
     public function carDetail()
     {

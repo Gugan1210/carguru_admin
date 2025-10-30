@@ -9,6 +9,14 @@ class Models extends Model
 {
     protected $table = 'models';
     protected $fillable = ['id', 'brand_id', 'model_name', 'status', 'created_at', 'updated_at'];
+    protected $casts = [
+    'id' => 'integer',
+    'model_name' => 'string',
+    'brand_id' => 'integer',
+    'status' => 'boolean',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
     public function brand()
     {

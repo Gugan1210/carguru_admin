@@ -27,13 +27,31 @@ class Commission extends Model
         'tiered_category',
     ];
 
-    protected $casts = [
-        'tiered_category' => 'array', // auto decode JSON
-        'start_date' => 'date',
-        'end_date' => 'date',
-        'commission_start_date' => 'date',
-        'commission_end_date' => 'date',
-    ];
+protected $casts = [
+    'id' => 'integer',
+
+    'commission_id' => 'string',
+    'designated_role' => 'string',
+    'business_unit' => 'string',
+    'commission_type' => 'string',
+    'duration' => 'string',
+
+    'start_date' => 'date',
+    'end_date' => 'date',
+
+    'commission_category' => 'string',
+    'commission_duration' => 'string',
+    'commission_start_date' => 'date',
+    'commission_end_date' => 'date',
+    'commission_description' => 'string',
+
+    'tiered_category' => 'array', // longtext storing JSON, if plain text make it 'string'
+
+    'status' => 'boolean',
+
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
     public function getCommissionType()
     {

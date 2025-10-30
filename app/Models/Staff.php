@@ -35,6 +35,36 @@ class Staff extends Model
             "bank_account_number",
             "profile_image",
         ];
+        protected $casts = [
+    'id' => 'integer',
+    'staff_id' => 'string',
+    'business_unit' => 'string',
+    'department' => 'string',
+    'status' => 'string',
+    'designated_role' => 'string',
+    'designated_location' => 'string',
+    'specific_function' => 'string',
+    'name' => 'string',
+    'i_c_number' => 'string',
+    'gender' => 'string',
+    'race' => 'string',
+    'contact_number' => 'string',
+    'email' => 'string',
+    'address_line_1' => 'string',
+    'address_line_2' => 'string',
+    'postcode' => 'string',
+    'state_id' => 'string',
+    'city_id' => 'string',
+    'emergency_name' => 'string',
+    'emergency_contact' => 'string',
+    'relationship' => 'string',
+    'bank_name' => 'string',
+    'bank_account_number' => 'string',
+    'profile_image' => 'string',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
 
     public function getstate()
     {

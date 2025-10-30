@@ -28,6 +28,27 @@ class CarAccident extends Model
         'picture_of_keys',
         'others'
     ];
+    protected $casts = [
+    'id' => 'integer',
+    'car_detail_id' => 'string',
+    'owner' => 'string',
+    'usage' => 'string',
+    'car_accident' => 'string',
+    'flood_car' => 'string',
+    'manufacturers_warranty' => 'string',
+    'cargurus_warranty' => 'string',
+    'road_tax_amount' => 'string',
+    'road_tax_year' => 'string',
+    'inspector_feedback_comment' => 'string',
+    'carguru_spotlight_header_copy' => 'string',
+    'carguru_spotlight_body_copy' => 'string',
+    'voc_document' => 'string',
+    'roadtax_document' => 'string',
+    'picture_of_keys' => 'string',
+    'others' => 'string',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
 
     public function getUsage()
     {
