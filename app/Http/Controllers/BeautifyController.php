@@ -2,136 +2,167 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BeautifyManagement;
-use App\Models\CarInfo;
-use App\Models\CarSelectedPromos;
-use Exception;
+use App\Models\BeautifyInspection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Traits\commonTrait;
 
 class BeautifyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use commonTrait;
+    // List all inspections
     public function index()
     {
-        //
+        try {
+            Log::info('BeautifyInspection index hit');
+            $inspections = BeautifyInspection::all();
+            Log::info('Count: ' . $inspections->count());
+            return response()->json(['success' => true, 'data' => $inspections], 200);
+        } catch (\Exception $e) {
+            Log::error("BEAUTIFY_INDEX_ERROR: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to fetch inspections', 'error' => $e->getMessage()], 500);
+        }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Show single inspection
+    public function show($id)
     {
-        //
+        try {
+            $inspection = BeautifyInspection::find($id);
+            if (!$inspection) {
+                return response()->json(['success' => false, 'message' => 'Inspection not found'], 404);
+            }
+            return response()->json(['success' => true, 'data' => $inspection], 200);
+        } catch (\Exception $e) {
+            Log::error("BEAUTIFY_SHOW_ERROR: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to fetch inspection'], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+
+        try {
+            // Get basic fields
+            $request->validate([
+                'promotion_id' => 'required|string',
+                'car_detail_id' => 'required|string',
+                'front_45' => 'nullable|file|mimes:jpg,jpeg,png',
+                'back_45' => 'nullable|file|mimes:jpg,jpeg,png',
+                'front_view' => 'nullable|file|mimes:jpg,jpeg,png',
+                'back_view' => 'nullable|file|mimes:jpg,jpeg,png',
+                'side' => 'nullable|file|mimes:jpg,jpeg,png',
+                'interior_front' => 'nullable|file|mimes:jpg,jpeg,png',
+                'interior_back' => 'nullable|file|mimes:jpg,jpeg,png',
+                'dashboard' => 'nullable|file|mimes:jpg,jpeg,png',
+                'speedometer' => 'nullable|file|mimes:jpg,jpeg,png',
+                'gear' => 'nullable|file|mimes:jpg,jpeg,png',
+                'engine' => 'nullable|file|mimes:jpg,jpeg,png',
+                'tyre' => 'nullable|file|mimes:jpg,jpeg,png',
+                'others' => 'nullable|file|mimes:jpg,jpeg,png',
+                'car_video' => 'nullable|file|mimes:mp4,mov,avi',
+                'video_360' => 'nullable|file|mimes:mp4,mov,avi',
+            ]);
+
+            $inputs = $request->only(['promotion_id', 'car_detail_id']);
+        // Save files and store path in DB
+            $fileFields = [
+                'front_45', 'back_45', 'front_view', 'back_view', 'side',
+                'interior_front', 'interior_back', 'dashboard', 'speedometer',
+                'gear', 'engine', 'tyre', 'others', 'car_video', 'video_360'
+            ];
+
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    // Save the file and store the path in $inputs
+                    $inputs[$field] = $request->file($field)->store('images', 'public');
+                }
+            }
+
+
+            // Create record
+            $inspection = BeautifyInspection::create($inputs);
+            // dd("inspection");
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Inspection created successfully',
+                'data' => $inspection
+            ], 201);
+
+        } catch (\Exception $e) {
+            Log::error("BEAUTIFY_STORE_ERROR: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create inspection',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Update inspection
+    public function update(Request $request, $id)
     {
         try {
-            $carSeleted = CarSelectedPromos::with('carDetail', 'getCarDiscount')->findOrFail($id);
-            // dd($carSeleted);
-            $carbeautify = BeautifyManagement::where('car_detail_id', $carSeleted->car_detail_id)->first();
+            $inspection = BeautifyInspection::find($id);
+            if (!$inspection) {
+                return response()->json(['success' => false, 'message' => 'Inspection not found'], 404);
+            }
 
-            return view('marketing.beautify.edit', compact('carSeleted', 'carbeautify'));
-        } catch (Exception $e) {
-            Log::error(message: 'Error::BEAUTIFY_CAR_EDIT, Message: ' . $e->getMessage() . ' Line No: ' . $e->getLine());
+            $inputs = $request->only([
+                'promotion_id',
+                'car_detail_id'
+            ]);
+
+            // Handle file uploads
+            $fileFields = [
+                'front_45',
+                'back_45',
+                'front_view',
+                'back_view',
+                'side',
+                'interior_front',
+                'interior_back',
+                'dashboard',
+                'speedometer',
+                'gear',
+                'engine',
+                'tyre',
+                'others',
+                'car_video',
+                'video_360'
+            ];
+
+            foreach ($fileFields as $field) {
+                if ($request->hasFile($field)) {
+                    $inputs[$field] = $request->file($field)->store('images', 'public');
+                }
+            }
+
+            $inspection->update($inputs);
+
+            return response()->json(['success' => true, 'message' => 'Inspection updated', 'data' => $inspection], 200);
+        } catch (\Exception $e) {
+            Log::error("BEAUTIFY_UPDATE_ERROR: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to update inspection'], 500);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Delete inspection
+    public function destroy($id)
     {
-        $this->validate($request, [
-            'promotion_id' => 'required',
-            'car_detail_id' => 'required',
-        ]);
-        // dd($request->all());
         try {
-            if (!empty($request->file('front_45'))) {
-                $inputs['front_45'] = $request->file('front_45')->store('images', 'public');
-            }
-            if (!empty($request->file('back_45'))) {
-                $inputs['back_45'] = $request->file('back_45')->store('images', 'public');
-            }
-            if (!empty($request->file('front_view'))) {
-                $inputs['front_view'] = $request->file('front_view')->store('images', 'public');
-            }
-            if (!empty($request->file('back_view'))) {
-                $inputs['back_view'] = $request->file('back_view')->store('images', 'public');
-            }
-            if (!empty($request->file('side'))) {
-                $inputs['side'] = $request->file('side')->store('images', 'public');
-            }
-            if (!empty($request->file('interior_front'))) {
-                $inputs['interior_front'] = $request->file('interior_front')->store('images', 'public');
-            }
-            if (!empty($request->file('interior_back'))) {
-                $inputs['interior_back'] = $request->file(key: 'interior_back')->store('images', 'public');
-            }
-            if (!empty($request->file('dashboard'))) {
-                $inputs['dashboard'] = $request->file('dashboard-img')->store('images', 'public');
-            }
-            if (!empty($request->file('speedometer'))) {
-                $inputs['speedometer'] = $request->file('speedometer')->store('images', 'public');
-            }
-            if (!empty($request->file('gear'))) {
-                $inputs['gear'] = $request->file('gear')->store('images', 'public');
-            }
-            if (!empty($request->file('engine'))) {
-                $inputs['engine'] = $request->file('engine')->store('images', 'public');
-            }
-            if (!empty($request->file('tyre'))) {
-                $inputs['tyre'] = $request->file('tyre')->store('images', 'public');
-            }
-            if (!empty($request->file('360_video'))) {
-                $inputs['video_360'] = $request->file('360_video')->store('images', 'public');
-            }
-            if (!empty($request->file('others'))) {
-                $inputs['others'] = $request->file('others')->store('images', 'public');
-            }
-            if (!empty($request->file('car_video'))) {
-                $inputs['car_video'] = $request->file('car_video')->store('images', 'public');
+            $inspection = BeautifyInspection::find($id);
+            if (!$inspection) {
+                return response()->json(['success' => false, 'message' => 'Inspection not found'], 404);
             }
 
-            // dd($inputs);
-            $carBeautify = BeautifyManagement::where('car_detail_id', $request->car_detail_id)->first();
-            // dd($carBeautify);
-            $carBeautify->update($inputs);
-
-            return redirect()->route('beautify.edit', $id)->with('success', 'Beautify Updated successfully');
-        } catch (Exception $e) {
-            Log::error(message: 'Error::BEAUTIFY_CAR_UPDATE, Message: ' . $e->getMessage() . ' Line No: ' . $e->getLine());
+            $inspection->delete();
+            return response()->json(['success' => true, 'message' => 'Inspection deleted'], 200);
+        } catch (\Exception $e) {
+            Log::error("BEAUTIFY_DELETE_ERROR: " . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to delete inspection'], 500);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

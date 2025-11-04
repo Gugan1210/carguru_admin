@@ -26,7 +26,7 @@ class BeautifyInspection extends Model
         'car_video',
         'video_360',
     ];
-    protected $casts = [
+protected $casts = [
     'id' => 'integer',
     'promotion_id' => 'string',
     'car_detail_id' => 'string',
@@ -48,4 +48,10 @@ class BeautifyInspection extends Model
     'created_at' => 'datetime',
     'updated_at' => 'datetime',
 ];
+
+    public function advertisement()
+    {
+        return $this->belongsTo(Advertisement::class, 'promotion_id', 'promotion_id');
+        
+    }
 }

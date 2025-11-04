@@ -3,50 +3,42 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\AdPlacement;
-use App\Models\AdTopic;
 
 class Advertisement extends Model
 {
-    //  use HasFactory;
-
-    // Table name (optional if it matches 'advertisements')
     protected $table = 'advertisements';
 
-    // Fillable fields - database column names
     protected $fillable = [
         'banner_id',
-        'set',
-        'banner_web',
-        'banner_mob',
-        'location',
+        'set',                     // JSON array of banners
         'status',
         'ad_placement',
         'ad_topic',
-        'headline_content_text',
+        'headline_content_text',    // JSON array of headlines
         'promotion_id',
         'is_marqee'
     ];
-protected $casts = [
-    'banner_id' => 'integer',
-    'set' => 'string',
-    'banner_web' => 'string',
-    'banner_mob' => 'string',
-    'location' => 'string',
-    'status' => 'boolean',
-    'ad_placement' => 'integer',
-    'ad_topic' => 'integer',
-    'headline_content_text' => 'string',
-    'promotion_id' => 'integer',
-    'is_marqee' => 'boolean',
+
+    // Casts for JSON and boolean fields
+    protected $casts = [
+        'banner_id' => 'integer',
+        'set' => 'array',                     // store and retrieve as array
+        'status' => 'boolean',
+        'ad_placement' => 'integer',
+        'ad_topic' => 'integer',
+        'headline_content_text' => 'array',   // store and retrieve as array
+        'promotion_id' => 'integer',
+        'is_marqee' => 'boolean',
     ];
-    public function getAdPlacement()
+
+    // Relationships
+    public function adPlacement()
     {
-        return $this->hasOne(AdPlacement::class, 'id', 'ad_placement');
+        return $this->belongsTo(AdPlacement::class, 'ad_placement', 'id');
     }
 
-    public function getAdTopic()
+    public function adTopic()
     {
-        return $this->hasOne(AdTopic::class, 'id', 'ad_topic');
+        return $this->belongsTo(AdTopic::class, 'ad_topic', 'id');
     }
 }

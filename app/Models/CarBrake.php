@@ -50,6 +50,8 @@ class CarBrake extends Model
 
 
 
+
+
     public function getBrakeFront()
     {
         return $this->hasOne(CarMakeBrake::class, 'id', 'brake_front');

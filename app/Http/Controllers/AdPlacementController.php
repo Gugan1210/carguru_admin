@@ -3,90 +3,95 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdPlacement;
-use App\Traits\commonTrait;
 use Illuminate\Http\Request;
-use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use App\Traits\commonTrait;
 
 class AdPlacementController extends Controller
 {
     use commonTrait;
-    /**
-     * Display a listing of the resource.
-     */
+
+    // LIST ALL
     public function index()
     {
-        //
+        $data = AdPlacement::orderBy('id', 'desc')->get();
+        return $this->sendResponse($data,'Ad Placements retrieved successfully',);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // CREATE
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(AdPlacement $adPlacement)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AdPlacement $adPlacement)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AdPlacement $adPlacement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AdPlacement $adPlacement)
-    {
-        //
-    }
-
-    public function getAdPlacement(Request $request)
-    {
-        try {
-            return $this->getDropdownOptions($request->field_id, $request->q);
-        } catch (Exception $e) {
-            Log::error('ERROR::GET_CAR_MARKETING_ADS ' . $e->getMessage() . ' Line No: ' . $e->getLine());
-            return response()->json(['error' => 'Unable to fetch Drive Train data.'], 500);
-        }
-    }
-
-    public function postAdplacement(Request $request)
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255|unique:adplacement,name'
+                'name' => 'required|string|max:255|unique:adplacement,name',
             ]);
 
-            return $this->postDropdownOptions($request->field_id, $request->name);
-        } catch (Exception $e) {
-            Log::error('Error::GET_CAR_MARKETING_ADS_SEARCH_DATA, Message: ' . $e->getMessage());
+            $create = AdPlacement::create([
+                'name' => $request->name,
+                'status' => $request->status ?? 1,
+            ]);
+
+            return $this->sendResponse($create, 'Ad Placement created successfully');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation Error', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
         }
     }
+
+    // SHOW SINGLE
+    public function show($id)
+    {
+        $data = AdPlacement::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Placement not found', [], 404);
+        }
+
+        return $this->sendResponse($data, 'Ad Placement retrieved successfully');
+    }
+
+    // UPDATE
+    public function update(Request $request, $id)
+    {
+        $data = AdPlacement::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Placement not found', [], 404);
+        }
+
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255|unique:adplacement,name,' . $id,
+            ]);
+
+            $data->update([
+                'name' => $request->name,
+                'status' => $request->status ?? $data->status,
+            ]);
+
+            return $this->sendResponse($data, 'Ad Placement updated successfully');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation Error', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
+        }
+    }
+
+    // DELETE
+    public function destroy($id)
+    {
+        $data = AdPlacement::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Placement not found', [], 404);
+        }
+
+        try {
+            $data->delete();
+            return $this->sendResponse([], 'Ad Placement deleted successfully');
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
+        }
+    }
+
 }

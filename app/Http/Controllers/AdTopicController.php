@@ -5,89 +5,95 @@ namespace App\Http\Controllers;
 use App\Models\AdTopic;
 use Illuminate\Http\Request;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use App\Traits\commonTrait;
 
 class AdTopicController extends Controller
 {
     use commonTrait;
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $data = AdTopic::orderBy('id', 'desc')->get();
+        return $this->sendResponse($data, 'Ad Topics retrieved successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // CREATE
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(AdTopic $adTopic)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AdTopic $adTopic)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AdTopic $adTopic)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AdTopic $adTopic)
-    {
-        //
-    }
-
-    public function getAdTopic(Request $request)
-    {
-        try {
-            return $this->getDropdownOptions($request->field_id, $request->q, '', $request->ad_placement_id);
-        } catch (Exception $e) {
-            Log::error('ERROR::GET_CAR_MARKETING_ADS ' . $e->getMessage() . ' Line No: ' . $e->getLine());
-            return response()->json(['error' => 'Unable to fetch Drive Train data.'], 500);
-        }
-    }
-
-    public function postAdTopic(Request $request)
     {
         try {
             $request->validate([
                 'name' => 'required|string|max:255|unique:adtopic,name',
-                'ad_placement_id' => 'required|numeric'
+                'ad_placement_id' => 'required|integer',
             ]);
 
-            return $this->postDropdownOptions($request->field_id, $request->name, $request->ad_placement_id);
-        } catch (Exception $e) {
-            Log::error('Error::GET_CAR_MARKETING_ADS_SEARCH_DATA, Message: ' . $e->getMessage());
+            $create = AdTopic::create([
+                'name' => $request->name,
+                'ad_placement_id' => $request->ad_placement_id,
+                'status' => $request->status ?? 1,
+            ]);
+
+            return $this->sendResponse($create, 'Ad Topic created successfully');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation Error', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
+        }
+    }
+
+    // SHOW SINGLE
+    public function show($id)
+    {
+        $data = AdTopic::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Topic not found', [], 404);
+        }
+
+        return $this->sendResponse($data, 'Ad Topic retrieved successfully');
+    }
+
+    // UPDATE
+    public function update(Request $request, $id)
+    {
+        $data = AdTopic::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Topic not found', [], 404);
+        }
+
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255|unique:adtopic,name,' . $id,
+                'ad_placement_id' => 'required|integer',
+            ]);
+
+            $data->update([
+                'name' => $request->name,
+                'ad_placement_id' => $request->ad_placement_id,
+                'status' => $request->status ?? $data->status,
+            ]);
+
+            return $this->sendResponse($data, 'Ad Topic updated successfully');
+
+        } catch (ValidationException $e) {
+            return $this->sendError('Validation Error', $e->errors(), 422);
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
+        }
+    }
+
+    // DELETE
+    public function destroy($id)
+    {
+        $data = AdTopic::find($id);
+        if (!$data) {
+            return $this->sendError('Ad Topic not found', [], 404);
+        }
+
+        try {
+            $data->delete();
+            return $this->sendResponse([], 'Ad Topic deleted successfully');
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong', [$e->getMessage()], 500);
         }
     }
 }

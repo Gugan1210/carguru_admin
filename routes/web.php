@@ -60,10 +60,11 @@ Auth::routes(['register' => false]);
 
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
-Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
+    // Route::resource('users', UserController::class);
     Route::resource('makes', MakeController::class);
+
     Route::resource('models', ModelController::class);
     Route::resource('variants', VariantController::class);
     Route::resource('carmakes', CarMakeController::class);
@@ -158,10 +159,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/list-adplacement/search', [AdPlacementController::class, 'getAdPlacement'])->name('Adplacement.search');
     Route::post('/add-adplacement', [AdPlacementController::class, 'postAdplacement'])->name('Adplacement.add');
     // Car Ad Topic Dropdown
-    Route::get('/list-getadTopic/search', [AdTopicController::class, 'getAdTopic'])->name('getAdTopic.search');
-    Route::post('/add-getadTopic', [AdTopicController::class, 'postAdTopic'])->name('getAdTopic.add');
-    Route::get('get-ads-banner', [AdvertismentController::class, 'getBanner'])->name('advertisment.getSet');
-    Route::get('get-ads-id', [AdvertismentController::class, 'getBannerById'])->name('getBannerById');
+
+//     Route::get('/list-getadTopic/search', [AdTopicController::class, 'getAdTopic'])->name('getAdTopic.search');
+//    Route::post('/add-adplacement', [AdPlacementController::class, 'postAdplacement'])->name('create_ad');
+//     Route::get('get-ads-banner', [AdvertismentController::class, 'getBanner'])->name('advertisment.getSet');
+//     Route::get('get-ads-id', [AdvertismentController::class, 'getBannerById'])->name('getBannerById');
+
+//     Route::prefix('adplacements')->group(function () {
+//     Route::get('/', [AdPlacementController::class, 'index']);
+//     Route::post('/', [AdPlacementController::class, 'postAdplacement']);
+//     Route::get('/{id}', [AdPlacementController::class, 'show']);
+//     Route::put('/{id}', [AdPlacementController::class, 'update']);
+//     Route::delete('/{id}', [AdPlacementController::class, 'destroy']);
+// });
 
     Route::resource('marketing/promo_discounts', PromosDiscountController::class);
     Route::post('/promotion-update-status', [PromosDiscountController::class, 'updatePromoStatus'])->name('promotion-update-status');
@@ -242,7 +252,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Search Country
     Route::get('/list-brand-country/search', [CountryController::class, 'getBrandCountry'])->name('brandCountry.search');
     // Engine CC Dropdown
-    Route::get('/list-engine-cc/search', [EngineCcController::class, 'getEngineCC'])->name('engineCC.search');
+    Route::get('/list-engine-cc/search', action: [EngineCcController::class, 'getEngineCC'])->name('engineCC.search');
     Route::post('/add-engine-cc', [EngineCcController::class, 'postEngineCC'])->name('engineCC.add');
 
     Route::resource('/country', CountryController::class);
@@ -294,4 +304,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/inspections/editgetdata/{inpection}', [InspectionCertificateController::class, 'editgetdata']);
     Route::post('/inspections/updatedata', [InspectionCertificateController::class, 'updatedata']);
     Route::resource('operations/car-in-take-management', CarInTakeManagementController::class);
+
+
+
+
+    
 });
